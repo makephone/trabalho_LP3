@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head> 
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<style type="text/css" media="all">
+
+.panelCor{
+    background-image: linear-gradient(to right,gray , white);
+    color: white;
+
+}
+
+.r{
+    width: 90%;
+}
+.f{
+    font-size: 26px;
+}
+.space{
+    height: 35px;
+}
+.corpo{
+background-color:#f5f5f5;
+}
+
+</style>
+
+
+
+
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+var x=$(document);
+x.ready(dom);
+
+function dom(){
+
+$("#Dolarreal").change(dolarR)
+
+$("#Realdolar").change(realD)
+
+
+function dolarR(){
+var dolar =this.value;
+dolar=Number(dolar);
+
+if(isNaN(dolar)){
+    $("#ResultadoDolar").html('Inválido')
+}else{
+    $("#ResultadoDolar").html('Buscando..')
+
+var ajax =$.ajax({
+url: "/dolarReal",
+dataType: "html" ,
+timeout:'10000'
+}).done(function (data){
+    data=data.replace('<tr>','')
+    data=data.replace('</tr>','')  
+    data=data.replace('<td>','') 
+    data=data.replace('</td>','')      
+    var resultado=data*dolar;  
+    resultado=resultado.toFixed(2)
+    $("#ResultadoDolar").html('R$'+resultado)
+
+}).fail(function (jqXHR,texStatus){
+    $("#ResultadoDolar").html('Tente Novamente')
+})
+}
+
+}
+
+
+function realD(){
+var real =this.value;
+real=Number(real);
+if(isNaN(real)){
+    $("#ResultadoReal").html('Inválido')  
+}else{
+    $("#ResultadoReal").html('Buscando...') 
+var ajax =$.ajax({
+url: "/realDolar",
+dataType: "html" ,
+timeout:'10000'
+}).done(function (data){
+    data=data.replace('<tr>','')
+    data=data.replace('</tr>','')  
+    data=data.replace('<td>','') 
+    data=data.replace('</td>','')      
+    var resultado=data*real;
+    resultado=resultado.toFixed(2)  
+    $("#ResultadoReal").html('US$'+resultado)
+
+}).fail(function (jqXHR,texStatus){
+    
+    $("#ResultadoReal").html('Tente Novamente') 
+})
+}
+
+}
+
+
+}
+
+</script>
+
+
+
+
+</head>
+<body class="corpo">
+
+    <div class="panel panel-default">
+        <div class="panel-body panelCor">
+        <h1>Conversor de Moeda</h1>
+        </div>
+      </div>
+
+
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+          <div class="label label-default f">Real/Dolar:</div>
+        </div>
+        <div class="btn-group" role="group">
+            <input id="Realdolar" type="text" class="form-control r" placeholder="Digite o Valor" aria-describedby="sizing-addon1">
+        </div>
+        <div class="btn-group" role="group">
+          <h3  id="ResultadoReal"></h3>
+        </div>
+      </div>
+      <div class="space"></div> 
+      <div class="btn-group btn-group-justified" role="group" aria-label="...">
+        <div class="btn-group" role="group">
+          <div class="label label-default f">Dolar/Real:</div>
+        </div>
+        <div class="btn-group" role="group">
+            <input  id="Dolarreal" type="text" class="form-control r" placeholder="Digite o Valor" aria-describedby="sizing-addon1">
+        </div>
+        <div class="btn-group" role="group">
+            <h3 id="ResultadoDolar"></h3>
+        </div>
+      </div> 
+</body>
+</html>
